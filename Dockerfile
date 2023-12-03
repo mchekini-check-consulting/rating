@@ -3,11 +3,13 @@ FROM openjdk:17-jdk-slim as build
 WORKDIR /opt/ratings
 
 COPY mvnw .
+RUN chmod +x mvnw
 COPY .mvn .mvn
 COPY pom.xml .
+RUN ./mvnw dependency:resolve
 COPY src src
+RUN ./mvnw package -DskipTests
 
-RUN ./mvnw install -DskipTests
 
 FROM openjdk:17-jdk-slim
 
